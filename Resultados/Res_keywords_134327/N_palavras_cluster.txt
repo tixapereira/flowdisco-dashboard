@@ -1,0 +1,61 @@
+---------START--------
+Média e Desvio Padrão do Número de Palavras por Cluster (Presidente):
+ clusters_speaker_Presidente  mean_word_count  std_word_count
+                         0.0        20.564706       24.961958
+                         1.0        27.750000       21.171915
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (GOV):
+ clusters_speaker_GOV  mean_word_count  std_word_count
+                  0.0        38.080808        31.98292
+                  1.0        35.687500        26.19655
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (PSD):
+ clusters_speaker_PSD  mean_word_count  std_word_count
+                  0.0        27.967320       26.113220
+                  1.0        26.698795       25.372702
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (CDS-PP):
+ clusters_speaker_CDS-PP  mean_word_count  std_word_count
+                     0.0        21.162791       18.669979
+                     1.0        24.900000       18.609279
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (PS):
+ clusters_speaker_PS  mean_word_count  std_word_count
+                 0.0        14.034483       20.008003
+                 1.0        31.873333       27.487470
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (CH):
+ clusters_speaker_CH  mean_word_count  std_word_count
+                 0.0        26.778894       22.768962
+                 1.0        10.108108       12.177419
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (BE):
+ clusters_speaker_BE  mean_word_count  std_word_count
+                 0.0        28.395349       32.367782
+                 1.0         5.125000        4.223658
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (L):
+ clusters_speaker_L  mean_word_count  std_word_count
+                0.0           38.125       26.532434
+                1.0           10.500       11.325601
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (IL):
+ clusters_speaker_IL  mean_word_count  std_word_count
+                 0.0        45.910448       31.251536
+                 1.0        20.090909       18.646866
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (PCP):
+ clusters_speaker_PCP  mean_word_count  std_word_count
+                  0.0        54.428571       43.143540
+                  1.0        35.466667       33.736091
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (PAN):
+ clusters_speaker_PAN  mean_word_count  std_word_count
+                  0.0             82.0       48.086461
+                  1.0             19.0             NaN
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (JPP):
+ clusters_speaker_JPP  mean_word_count  std_word_count
+                  0.0        55.714286       35.089002
+----------------
+---------END--------
