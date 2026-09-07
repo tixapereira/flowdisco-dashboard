@@ -1,0 +1,90 @@
+---------START--------
+Counting the number of utterances per cluster - Presidente: 
+clusters_speaker_Presidente
+161
+  9
+Média e desvio padrão do número de falas por cluster - Presidente:
+ 85.000000
+107.480231
+----------------
+Counting the number of utterances per cluster - GOV: 
+clusters_speaker_GOV
+156
+142
+Média e desvio padrão do número de falas por cluster - GOV:
+149.000000
+  9.899495
+----------------
+Counting the number of utterances per cluster - PSD: 
+clusters_speaker_PSD
+103
+ 97
+Média e desvio padrão do número de falas por cluster - PSD:
+100.000000
+  4.242641
+----------------
+Counting the number of utterances per cluster - CH: 
+clusters_speaker_CH
+142
+ 38
+Média e desvio padrão do número de falas por cluster - CH:
+90.000000
+73.539105
+----------------
+Counting the number of utterances per cluster - BE: 
+clusters_speaker_BE
+68
+31
+Média e desvio padrão do número de falas por cluster - BE:
+49.500000
+26.162951
+----------------
+Counting the number of utterances per cluster - PS: 
+clusters_speaker_PS
+147
+ 50
+Média e desvio padrão do número de falas por cluster - PS:
+98.500000
+68.589358
+----------------
+Counting the number of utterances per cluster - CDS-PP: 
+clusters_speaker_CDS-PP
+40
+37
+Média e desvio padrão do número de falas por cluster - CDS-PP:
+38.50000
+ 2.12132
+----------------
+Counting the number of utterances per cluster - L: 
+clusters_speaker_L
+61
+17
+Média e desvio padrão do número de falas por cluster - L:
+39.000000
+31.112698
+----------------
+Counting the number of utterances per cluster - IL: 
+clusters_speaker_IL
+75
+23
+Média e desvio padrão do número de falas por cluster - IL:
+49.000000
+36.769553
+----------------
+Counting the number of utterances per cluster - PCP: 
+clusters_speaker_PCP
+42
+12
+Média e desvio padrão do número de falas por cluster - PCP:
+27.000000
+21.213203
+----------------
+Counting the number of utterances per cluster - PAN: 
+clusters_speaker_PAN
+13
+ 2
+Média e desvio padrão do número de falas por cluster - PAN:
+7.500000
+7.778175
+----------------
+---------END--------
