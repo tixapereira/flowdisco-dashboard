@@ -1,0 +1,30 @@
+
+Clusters Presidente : 3
+V-measure Teste Presidente : 0
+V-measure Treino Presidente : 0
+
+Clusters Direita : 4
+V-measure Teste Direita : 0
+V-measure Treino Direita : 0
+
+Clusters Esquerda : 2
+V-measure Teste Esquerda : 0
+V-measure Treino Esquerda : 0
+
+Clusters Outros_Partidos : 0
+V-measure Teste Outros_Partidos : 0
+V-measure Treino Outros_Partidos : 0
+
+Clusters GOV : 10
+V-measure Teste GOV : 0
+V-measure Treino GOV : 0
+
+Clusters Acao : 25
+V-measure Teste Acao : 0
+V-measure Treino Acao : 0
+
+Accuracy:  0.0
+
+V-measure Teste:  0
+
+V-measure Treino:  0

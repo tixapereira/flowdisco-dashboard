@@ -1,0 +1,54 @@
+---------START--------
+Counting the number of utterances per cluster - Presidente: 
+clusters_speaker_Presidente
+149
+ 57
+ 11
+  7
+Média e desvio padrão do número de falas por cluster - Presidente:
+56.000000
+66.020199
+----------------
+Counting the number of utterances per cluster - Direita: 
+clusters_speaker_Direita
+365
+156
+ 98
+ 24
+Média e desvio padrão do número de falas por cluster - Direita:
+160.750000
+146.490898
+----------------
+Counting the number of utterances per cluster - Esquerda: 
+clusters_speaker_Esquerda
+281
+ 97
+Média e desvio padrão do número de falas por cluster - Esquerda:
+189.000000
+130.107648
+----------------
+Counting the number of utterances per cluster - Outros_Partidos: 
+clusters_speaker_Outros_Partidos
+40
+Média e desvio padrão do número de falas por cluster - Outros_Partidos:
+40.0
+ NaN
+----------------
+Counting the number of utterances per cluster - GOV: 
+clusters_speaker_GOV
+93
+56
+43
+28
+18
+16
+14
+13
+12
+10
+10
+Média e desvio padrão do número de falas por cluster - GOV:
+28.454545
+26.078204
+----------------
+---------END--------

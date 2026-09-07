@@ -1,0 +1,47 @@
+0: Presidente -> sr - deputado - para
+1: Presidente -> de - para - sr
+2: Presidente -> faça - favor - calma
+3: Direita -> que - de - sr
+4: Direita -> não - verdade - que
+5: Direita -> bem - muito - ora
+6: Direita -> registar - consigo - me
+7: Esquerda -> que - de - sr
+8: Esquerda -> não - que - de
+9: GOV -> que - portugueses - portugal
+10: GOV -> de - saúde - que
+11: GOV -> partido - que - governo
+12: GOV -> não - deputada - sr
+13: GOV -> pensões - de - valor
+14: GOV -> que - liberal - iniciativa
+15: GOV -> social - estabilidade - para
+16: GOV -> de - mais - com
+17: GOV -> que - isso - preciso
+18: GOV -> habitação - mercado - deputada
+19: Outros
+20: PCP - Protestos
+21: PSD - Aplausos
+22: CDS-PP - Aplausos
+23: PS - Protestos
+24: CH - Protestos
+25: IL - Protestos
+26: L - Protestos
+27: CH - Aplausos
+28: CH - Risos
+29: PSD - Protestos
+30: PS - Aplausos
+31: L - Aplausos
+32: CH - Outros
+33: Aplausos
+34: IL - Aplausos
+35: IL - Risos
+36: L - Risos
+37: CDS-PP - Protestos
+38: PSD - Risos
+39: PCP - Aplausos
+40: BE - Protestos
+41: PS - Risos
+42: PAN - Protestos
+43: CDS-PP - Outros
+44: Outros (Não Agrupados)
+45: SOD (Eram 15 horas e 1 minuto.)
+46: EOD (Eram 20 horas e 2 minutos.)

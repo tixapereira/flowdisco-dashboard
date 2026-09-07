@@ -1,0 +1,39 @@
+---------START--------
+Média e Desvio Padrão do Número de Palavras por Cluster (Presidente):
+ clusters_speaker_Presidente  mean_word_count  std_word_count
+                        -1.0        18.857143        3.132016
+                         0.0        17.040268       12.228058
+                         1.0        25.771930       16.102371
+                         2.0         5.000000        4.266146
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (Direita):
+ clusters_speaker_Direita  mean_word_count  std_word_count
+                      0.0        40.427397       22.951533
+                      1.0         7.198718        6.114414
+                      2.0         3.265306        1.108087
+                      3.0         9.833333        3.102126
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (Esquerda):
+ clusters_speaker_Esquerda  mean_word_count  std_word_count
+                       0.0        39.295374       25.160661
+                       1.0         7.412371        9.038981
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (Outros_Partidos):
+ clusters_speaker_Outros_Partidos  mean_word_count  std_word_count
+                             -1.0           46.025       26.561479
+----------------
+Média e Desvio Padrão do Número de Palavras por Cluster (GOV):
+ clusters_speaker_GOV  mean_word_count  std_word_count
+                 -1.0        38.010753       25.177412
+                  0.0        47.946429       30.562258
+                  1.0        46.116279       29.410242
+                  2.0        37.857143       25.662647
+                  3.0        16.500000        9.702941
+                  4.0        34.312500       22.664859
+                  5.0        39.571429       19.109862
+                  6.0        30.769231       17.716065
+                  7.0        54.250000       44.908240
+                  8.0        30.800000       23.663380
+                  9.0        35.600000       20.189106
+----------------
+---------END--------
