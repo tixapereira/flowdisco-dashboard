@@ -927,6 +927,7 @@ else:
                             break
                 
                 if caminho_html_encontrado:
+                    print(f"👉 Ano {ano_selecionado}: O grafo HTML foi carregado da pasta -> {caminho_html_encontrado}")
                     with open(caminho_html_encontrado, 'r', encoding='utf-8') as f: 
                         html_source = f.read()
                     
@@ -961,6 +962,29 @@ else:
                         .legenda-aberta h1, .legenda-aberta h2, .legenda-aberta h3, .legenda-aberta b, .legenda-aberta strong { text-transform: uppercase !important; margin-bottom: 6px !important; font-size: 11px !important; opacity: 0.8 !important; }
                         .titulo-caption-injetado { font-size: 14px !important; font-weight: 800 !important; text-transform: uppercase !important; border-bottom: 2px solid #e2e8f0 !important; padding-bottom: 6px !important; margin-bottom: 10px !important; opacity: 1 !important; }
                     </style>
+                    /* AJUSTES PARA TELEMÓVEIS E ECRÃS PEQUENOS */
+                        @media screen and (max-width: 768px) {
+                            .legenda-aberta { 
+                                top: 5px !important; 
+                                right: 5px !important; 
+                                padding: 8px !important; 
+                                min-width: 120px !important; 
+                                transform: scale(0.75); 
+                                transform-origin: top right;
+                                max-height: 35vh !important;
+                            }
+                            #nova-barra-limpa { 
+                                bottom: 5px !important; 
+                                left: 5px !important; 
+                                right: 5px !important;
+                                padding: 10px !important; 
+                                max-width: calc(100vw - 10px) !important;
+                                transform: scale(0.8); 
+                                transform-origin: bottom left;
+                            }
+                            .linha-um { gap: 5px 10px !important; }
+                            .linha-dois { gap: 5px !important; }
+                        }
                     <script>
                         setTimeout(function() {
                             try {
