@@ -1,0 +1,50 @@
+
+Clusters Presidente : 2
+V-measure Teste Presidente : 0
+V-measure Treino Presidente : 0
+
+Clusters GOV : 2
+V-measure Teste GOV : 0
+V-measure Treino GOV : 0
+
+Clusters CH : 2
+V-measure Teste CH : 0
+V-measure Treino CH : 0
+
+Clusters PS : 2
+V-measure Teste PS : 0
+V-measure Treino PS : 0
+
+Clusters PSD : 2
+V-measure Teste PSD : 0
+V-measure Treino PSD : 0
+
+Clusters IL : 2
+V-measure Teste IL : 0
+V-measure Treino IL : 0
+
+Clusters PCP : 2
+V-measure Teste PCP : 0
+V-measure Treino PCP : 0
+
+Clusters BE : 2
+V-measure Teste BE : 0
+V-measure Treino BE : 0
+
+Clusters L : 2
+V-measure Teste L : 0
+V-measure Treino L : 0
+
+Clusters PAN : 2
+V-measure Teste PAN : 0
+V-measure Treino PAN : 0
+
+Clusters Acao : 21
+V-measure Teste Acao : 0
+V-measure Treino Acao : 0
+
+Accuracy:  0.0
+
+V-measure Teste:  0
+
+V-measure Treino:  0
