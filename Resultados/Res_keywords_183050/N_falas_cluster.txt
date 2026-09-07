@@ -1,0 +1,88 @@
+---------START--------
+Counting the number of utterances per cluster - Presidente: 
+clusters_speaker_Presidente
+96
+Média e desvio padrão do número de falas por cluster - Presidente:
+96.0
+ NaN
+----------------
+Counting the number of utterances per cluster - GOV: 
+clusters_speaker_GOV
+158
+ 64
+Média e desvio padrão do número de falas por cluster - GOV:
+111.000000
+ 66.468037
+----------------
+Counting the number of utterances per cluster - PSD: 
+clusters_speaker_PSD
+106
+ 36
+Média e desvio padrão do número de falas por cluster - PSD:
+71.000000
+49.497475
+----------------
+Counting the number of utterances per cluster - PS: 
+clusters_speaker_PS
+66
+62
+Média e desvio padrão do número de falas por cluster - PS:
+64.000000
+ 2.828427
+----------------
+Counting the number of utterances per cluster - PCP: 
+clusters_speaker_PCP
+50
+16
+Média e desvio padrão do número de falas por cluster - PCP:
+33.000000
+24.041631
+----------------
+Counting the number of utterances per cluster - CDS-PP: 
+clusters_speaker_CDS-PP
+48
+ 9
+Média e desvio padrão do número de falas por cluster - CDS-PP:
+28.500000
+27.577164
+----------------
+Counting the number of utterances per cluster - BE: 
+clusters_speaker_BE
+65
+14
+Média e desvio padrão do número de falas por cluster - BE:
+39.500000
+36.062446
+----------------
+Counting the number of utterances per cluster - CH: 
+clusters_speaker_CH
+20
+ 6
+Média e desvio padrão do número de falas por cluster - CH:
+13.000000
+ 9.899495
+----------------
+Counting the number of utterances per cluster - PAN: 
+clusters_speaker_PAN
+28
+13
+Média e desvio padrão do número de falas por cluster - PAN:
+20.500000
+10.606602
+----------------
+Counting the number of utterances per cluster - PEV: 
+clusters_speaker_PEV
+20
+ 4
+Média e desvio padrão do número de falas por cluster - PEV:
+12.000000
+11.313708
+----------------
+Counting the number of utterances per cluster - IL: 
+clusters_speaker_IL
+19
+Média e desvio padrão do número de falas por cluster - IL:
+19.0
+ NaN
+----------------
+---------END--------
