@@ -13,6 +13,10 @@ if 'ano_temp' not in st.session_state:
     st.session_state.ano_temp = "2026"
 if 'ver_global' not in st.session_state:
     st.session_state.ver_global = False
+if 'filtro_oradores_tab1' not in st.session_state:
+    st.session_state.filtro_oradores_tab1 = ["Todos"]
+if 'filtro_oradores_tab3' not in st.session_state:
+    st.session_state.filtro_oradores_tab3 = ["Todos"]
 
 import base64
 
@@ -108,7 +112,7 @@ FICHEIROS_ANO = {
     "2021": "Estado_Da_Nacao_21_julho_2021.xlsx"
 }
 
-@st.cache_data
+@st.cache_data(show_spinner="A processar os registos e matrizes do debate...")
 def load_data(file_name):
     df = pd.read_excel(file_name)
     return df
@@ -279,11 +283,19 @@ else:
                 if selecionados[-1] == "Todos": st.session_state["filtro_oradores_tab3"] = ["Todos"]
                 else: st.session_state["filtro_oradores_tab3"] = [s for s in selecionados if s != "Todos"]
 
+        # MAPA DE CORES CUSTOMIZADO
+        mapa_cores = {
+            "Cooperação": "#10b981",      # Verde Esmeralda
+            "Conflito": "#ef4444",        # Vermelho Forte
+            "Ação: Aplausos": "#3B82F6",  # Laranja
+            "Ação: Protestos": "#c084fc", # Roxo
+            "Ação: Outros": "#94a3b8"     # Cinzento
+        }
 
         # DECISÃO DE NAVEGAÇÃO: MODO GLOBAL vs MODO INDIVIDUAL
         if st.session_state.ver_global:
             
-            @st.cache_data
+            @st.cache_data(show_spinner="A analisar os dados dos debates...")
             def carregar_todos_os_anos():
                     lista_dfs = []
                     for ano, ficheiro in FICHEIROS_ANO.items():
@@ -310,7 +322,17 @@ else:
                 col_g1, col_g2 = st.columns(2)
                 with col_g1:
                     st.markdown("<h5 style='text-align: center; color: #0f172a;'>Total de Intervenções por Ano</h5>", unsafe_allow_html=True)
-                    fig_anos = px.histogram(df_global, x='Ano_Debate', color='Ano_Debate', template="plotly_white")
+                    
+                    # Criamos um gradiente do azul mais claro (2021) ao azul mais escuro (2026)
+                    tons_de_azul = ['#bfdbfe', '#93c5fd', '#60a5fa', '#3b82f6', '#2563eb', '#1d4ed8']
+                    
+                    fig_anos = px.histogram(
+                        df_global, 
+                        x='Ano_Debate', 
+                        color='Ano_Debate', 
+                        template="plotly_white",
+                        color_discrete_sequence=tons_de_azul # Aplica as intensidades diferentes
+                    )
                     fig_anos.update_layout(showlegend=False, xaxis={'title': 'Ano'}, yaxis={'title': 'Total de Intervenções'})
                     
                     fig_anos.update_traces(
@@ -409,7 +431,7 @@ else:
                             color=col_ato_global, 
                             barmode='group', 
                             template="plotly_white",
-                            color_discrete_sequence=px.colors.qualitative.Pastel,
+                            color_discrete_map=mapa_cores, # <--- ESTAVA AQUI O ERRO! (Dizia sequence)
                             category_orders={col_ato_global: categorias_validas}
                         )
                         
@@ -522,8 +544,12 @@ else:
                     
                     def cor_heatmap(val):
                         if val == '-': return 'background-color: transparent; color: #94a3b8; text-align: center;'
-                        hue = (1.0 - float(val)) * 120 
-                        return f'background-color: hsl({hue}, 85%, 65%); color: #0f172a; text-align: center; font-weight: 600;'
+                        
+                        v = float(val)
+                        hue = int((1.0 - v) * 150) 
+                        
+                        # Fixamos a Saturação nos 84% e a Luminosidade nos 55% para igualar a intensidade do Plotly
+                        return f'background-color: hsl({hue}, 84%, 55%); color: #0f172a; text-align: center; font-weight: 700;'
                         
                     try:
                         styler = tabela_pivot.style.map(cor_heatmap)
@@ -609,7 +635,7 @@ else:
         # MODO INDIVIDUAL (ANO ESPECÍFICO)
         else:
             # Cria as abas UMA ÚNICA VEZ
-            tab1, tab2, tab3 = st.tabs(["Análise Estatística", "Grafo de Fluxos", "Explorador de Dados"])
+            tab1, tab2, tab3 = st.tabs(["Análise Estatística", "Fluxo", "Explorador de Dados"])
             
             # ABA 1: ESTATÍSTICA
             with tab1:
@@ -665,7 +691,7 @@ else:
                 
                 # Gráfico de Barras
                 with col_graf1:
-                    st.markdown("<h4 style='text-align: center; color: #0f172a; font-weight: 700; font-size: 1.3rem; margin-bottom: 20px;'>Perfil de Comportamento por Orador</h4>", unsafe_allow_html=True)
+                    st.markdown("<h4 style='text-align: center; color: #0f172a; font-weight: 700; font-size: 1.3rem; margin-bottom: 20px;'>Falas por Orador</h4>", unsafe_allow_html=True)
                     if 'Speaker' in df.columns:
                         df_barras = df_filtrado_tab1[~df_filtrado_tab1['Speaker_Filtro'].astype(str).str.startswith(("Ação", "Ações"))]
                         
@@ -678,20 +704,18 @@ else:
                                 y='Speaker_Filtro', 
                                 color=col_ato, 
                                 orientation='h',
-                                barmode='stack', # Empilha as cores umas nas outras
+                                barmode='stack', 
                                 template="plotly_white", 
-                                color_discrete_sequence=px.colors.qualitative.Pastel,
+                                color_discrete_map=mapa_cores, # <--- Corrigido para MAP
                                 category_orders={col_ato: ordem_legenda}
                             )
                             
-                            # Escondemos a legenda pq o gráfico circular ao lado já explica as cores
                             fig_bar.update_layout(
                                 showlegend=False, 
                                 yaxis={'categoryorder':'total ascending', 'title': 'Orador'}, 
                                 xaxis={'title': 'Total de Intervenções'}
                             )
                             
-                            # Tooltip com as novas categorias
                             fig_bar.update_traces(
                                 hovertemplate="<b>Orador:</b> %{y}<br><b>%{data.name}:</b> %{x} intervenções<extra></extra>"
                             )
@@ -705,7 +729,15 @@ else:
                     st.markdown("<h4 style='text-align: center; color: #0f172a; font-weight: 700; font-size: 1.3rem; margin-bottom: 20px;'>Comportamento (Verbal e Não-Verbal)</h4>", unsafe_allow_html=True)
                     if col_ato:
                         ordem_legenda = ["Cooperação", "Conflito", "Ação: Aplausos", "Ação: Protestos", "Ação: Outros"]
-                        fig_pie = px.pie(df_filtrado_tab1, names=col_ato, hole=0.4, template="plotly_white", color_discrete_sequence=px.colors.qualitative.Pastel, category_orders={col_ato: ordem_legenda})
+                        fig_pie = px.pie(
+                            df_filtrado_tab1, 
+                            names=col_ato, 
+                            color=col_ato, 
+                            hole=0.4, 
+                            template="plotly_white", 
+                            color_discrete_map=mapa_cores, # <--- Corrigido para MAP
+                            category_orders={col_ato: ordem_legenda}
+                        )
                         fig_pie.update_traces(textposition='auto', textinfo='percent', hovertemplate="<b>%{label}</b><br>Percentagem: %{percent}<br>Intervenções: %{value}<extra></extra>")
                         st.plotly_chart(fig_pie, use_container_width=True)
 
@@ -735,7 +767,7 @@ else:
                         x='Fase_Debate', 
                         color=col_ato, 
                         template="plotly_white",
-                        color_discrete_sequence=px.colors.qualitative.Pastel,
+                        color_discrete_map=mapa_cores, # <--- AQUI ESTÁ O SEGREDO!
                         category_orders={
                             col_ato: ordem_legenda,
                             'Fase_Debate': ordem_das_fases
@@ -931,15 +963,22 @@ else:
                     with open(caminho_html_encontrado, 'r', encoding='utf-8') as f: 
                         html_source = f.read()
                     
-                    # TRUQUE: CORRIGIR AS PALAVRAS CORTADAS NO HTML
+                    # ==========================================
+                    # TRUQUE: CORRIGIR TEXTOS E ERROS DO CÓDIGO NATIVO
+                    # ==========================================
                     html_source = html_source.replace("Cooperao", "Cooperação")
                     html_source = html_source.replace("Aco: Aplausos", "Ação: Aplausos")
                     html_source = html_source.replace("Aco: Protestos", "Ação: Protestos")
                     html_source = html_source.replace("Aco: Outros", "Ação: Outros")
                     html_source = html_source.replace("Acoes", "Ações")
                     html_source = re.sub(r'\s*\(\d+\)', '', html_source)
+                    
+                    # 🚀 A BALA DE PRATA: Corrige o bug do ".toFixed" do código original!
+                    # (Procura a função quebrada e acrescenta-lhe os parênteses que faltavam)
+                    html_source = re.sub(r'\.toFixed(?!\()', '.toFixed(2)', html_source)
                                    
                     script_e_css = """
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
                     <style>
                         #grafico { margin: 0 !important; width: 100% !important; height: 100vh !important; padding: 0 !important; }
                         #sidebar, #openSidebar, .closebtn, #main-title, #file-subtitle { display: none !important; }
@@ -961,31 +1000,17 @@ else:
                         .legenda-aberta > div > div, .legenda-aberta span { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; }
                         .legenda-aberta h1, .legenda-aberta h2, .legenda-aberta h3, .legenda-aberta b, .legenda-aberta strong { text-transform: uppercase !important; margin-bottom: 6px !important; font-size: 11px !important; opacity: 0.8 !important; }
                         .titulo-caption-injetado { font-size: 14px !important; font-weight: 800 !important; text-transform: uppercase !important; border-bottom: 2px solid #e2e8f0 !important; padding-bottom: 6px !important; margin-bottom: 10px !important; opacity: 1 !important; }
-                    </style>
-                    /* AJUSTES PARA TELEMÓVEIS E ECRÃS PEQUENOS */
+                        [title*="Matrix heatmap"], [title*="Matrix Heatmap"] { display: none !important; }
+                        /* AJUSTES PARA TELEMÓVEIS E ECRÃS PEQUENOS */
                         @media screen and (max-width: 768px) {
-                            .legenda-aberta { 
-                                top: 5px !important; 
-                                right: 5px !important; 
-                                padding: 8px !important; 
-                                min-width: 120px !important; 
-                                transform: scale(0.75); 
-                                transform-origin: top right;
-                                max-height: 35vh !important;
-                            }
-                            #nova-barra-limpa { 
-                                bottom: 5px !important; 
-                                left: 5px !important; 
-                                right: 5px !important;
-                                padding: 10px !important; 
-                                max-width: calc(100vw - 10px) !important;
-                                transform: scale(0.8); 
-                                transform-origin: bottom left;
-                            }
+                            .legenda-aberta { top: 5px !important; right: 5px !important; padding: 8px !important; min-width: 120px !important; transform: scale(0.75); transform-origin: top right; max-height: 35vh !important; }
+                            #nova-barra-limpa { bottom: 5px !important; left: 5px !important; right: 5px !important; padding: 10px !important; max-width: calc(100vw - 10px) !important; transform: scale(0.8); transform-origin: bottom left; }
                             .linha-um { gap: 5px 10px !important; }
                             .linha-dois { gap: 5px !important; }
                         }
+                    </style>
                     <script>
+                        // Apenas mantemos o JS que embeleza as caixas (recolocação e cor)
                         setTimeout(function() {
                             try {
                                 let todosElementos = document.querySelectorAll('*');
@@ -1017,6 +1042,7 @@ else:
                                 document.querySelectorAll('h2, h3, label').forEach(el => { if(el.innerText && el.innerText.trim() === "Speakers") el.style.display = "none"; });
                             } catch (err) { }
                         }, 800); 
+                        
                         setInterval(function() {
                             try {
                                 let divElements = document.querySelectorAll('div');
@@ -1040,6 +1066,12 @@ else:
                                     }
                                 });
                             } catch (err) {}
+                            try {
+                                document.querySelectorAll('[title*="Heatmap"], [title*="heatmap"]').forEach(botao => {
+                                    botao.style.setProperty('display', 'none', 'important');
+                                });
+                            } catch (err) {}
+                            
                         }, 200); 
                     </script>
                     """
@@ -1051,6 +1083,7 @@ else:
             # ABA 3: EXPLORADOR DE DADOS
             with tab3:
                 if 'Speaker' in df.columns:
+                    # Preparar o filtro (mantemos o teu código original para limpar o menu)
                     df['Speaker_Filtro'] = df['Speaker'].astype(str).replace(['nan', 'NaN', 'None', 'none', '', ' '], "Ação: Outros")
                     if 'Tipo' in df.columns:
                         df.loc[df['Tipo'] == 'ação', 'Speaker_Filtro'] = 'Ação: Outros'
@@ -1073,12 +1106,25 @@ else:
                     mask_acoes = (df['Tipo'] == 'ação') | df['Speaker_Filtro'].astype(str).str.startswith("Ação")
                     if col_ato: mask_acoes = mask_acoes | df[col_ato].astype(str).str.startswith("Ação")
                     
-                    if "Todos" in oradores_tab3 or not oradores_tab3: mask_oradores = pd.Series(True, index=df.index)
-                    else: mask_oradores = df['Speaker_Filtro'].isin(oradores_tab3)
+                    if "Todos" in oradores_tab3 or not oradores_tab3: 
+                        mask_oradores = pd.Series(True, index=df.index)
+                    else: 
+                        # Usamos a coluna original df['Speaker'] para não esquecer quem fez a ação!
+                        mask_oradores = df['Speaker'].isin(oradores_tab3)
                     
-                    if mostrar_acoes_tab3: df_filtrado_tab3 = df[mask_oradores | mask_acoes]
-                    else: df_filtrado_tab3 = df[mask_oradores & ~mask_acoes]
-                    
+                    if "Todos" in oradores_tab3 or not oradores_tab3:
+                        if mostrar_acoes_tab3:
+                            df_filtrado_tab3 = df # Mostra literalmente tudo
+                        else:
+                            df_filtrado_tab3 = df[~mask_acoes] # Mostra só falas de todos, sem ações
+                    else:
+                        if mostrar_acoes_tab3:
+                            # Mostra as falas e as ações APENAS do partido selecionado
+                            df_filtrado_tab3 = df[mask_oradores] 
+                        else:
+                            # Mostra APENAS as falas verbais do partido selecionado
+                            df_filtrado_tab3 = df[mask_oradores & ~mask_acoes]
+
                     mapa_colunas = {
                         'dialogue_id': 'ID do Diálogo', 'turn_id': 'ID do Turno', 'Speaker': 'Orador',
                         'Utterance': 'Fala', 'Ação': 'Ação', col_ato: 'Comportamento'
