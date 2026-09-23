@@ -1,0 +1,98 @@
+---------START--------
+Counting the number of utterances per cluster - Presidente: 
+clusters_speaker_Presidente
+207
+ 17
+Média e desvio padrão do número de falas por cluster - Presidente:
+112.000000
+134.350288
+----------------
+Counting the number of utterances per cluster - CH: 
+clusters_speaker_CH
+226
+ 96
+Média e desvio padrão do número de falas por cluster - CH:
+161.000000
+ 91.923882
+----------------
+Counting the number of utterances per cluster - IL: 
+clusters_speaker_IL
+63
+24
+Média e desvio padrão do número de falas por cluster - IL:
+43.500000
+27.577164
+----------------
+Counting the number of utterances per cluster - PSD: 
+clusters_speaker_PSD
+101
+ 80
+Média e desvio padrão do número de falas por cluster - PSD:
+90.500000
+14.849242
+----------------
+Counting the number of utterances per cluster - PS: 
+clusters_speaker_PS
+177
+ 63
+Média e desvio padrão do número de falas por cluster - PS:
+120.000000
+ 80.610173
+----------------
+Counting the number of utterances per cluster - JPP: 
+clusters_speaker_JPP
+11
+ 4
+Média e desvio padrão do número de falas por cluster - JPP:
+7.500000
+4.949747
+----------------
+Counting the number of utterances per cluster - PCP: 
+clusters_speaker_PCP
+31
+10
+Média e desvio padrão do número de falas por cluster - PCP:
+20.500000
+14.849242
+----------------
+Counting the number of utterances per cluster - GOV: 
+clusters_speaker_GOV
+188
+125
+Média e desvio padrão do número de falas por cluster - GOV:
+156.500000
+ 44.547727
+----------------
+Counting the number of utterances per cluster - CDS-PP: 
+clusters_speaker_CDS-PP
+41
+12
+Média e desvio padrão do número de falas por cluster - CDS-PP:
+26.500000
+20.506097
+----------------
+Counting the number of utterances per cluster - L: 
+clusters_speaker_L
+61
+16
+Média e desvio padrão do número de falas por cluster - L:
+38.500000
+31.819805
+----------------
+Counting the number of utterances per cluster - BE: 
+clusters_speaker_BE
+12
+ 8
+Média e desvio padrão do número de falas por cluster - BE:
+10.000000
+ 2.828427
+----------------
+Counting the number of utterances per cluster - PAN: 
+clusters_speaker_PAN
+16
+ 9
+Média e desvio padrão do número de falas por cluster - PAN:
+12.500000
+ 4.949747
+----------------
+---------END--------
