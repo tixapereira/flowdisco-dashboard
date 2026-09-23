@@ -165,8 +165,38 @@ if not st.session_state.explorar:
         st.session_state.explorar = True
         st.rerun()
 
-# PÁGINA APÓS A PÁGINA INICIAL
+    # LOGOS DA PÁGINA INICIAL
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #94a3b8; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0;'>Apoios e Financiamento</p>", unsafe_allow_html=True)
+    
+    import base64
+    def get_logo_b64(path):
+        if os.path.exists(path):
+            with open(path, "rb") as f:
+                return base64.b64encode(f.read()).decode()
+        return None
 
+    b64_cisuc = get_logo_b64("imagens/CISUC.png")
+    b64_crai = get_logo_b64("imagens/crai-vertical.png")
+    b64_eu = get_logo_b64("imagens/Uniֶao_Europeia.jpg")
+    b64_logos = get_logo_b64("imagens/logos_.png")
+
+    html_logos = "<div style='display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 10px; margin-bottom: 20px;'>"
+    
+    if b64_cisuc:
+        html_logos += f"<img src='data:image/png;base64,{b64_cisuc}' style='height: 12px; width: auto; object-fit: contain; opacity: 0.9;'>"
+    if b64_crai:
+        html_logos += f"<img src='data:image/png;base64,{b64_crai}' style='height: 38px; width: auto; object-fit: contain; opacity: 0.9;'>"
+    if b64_eu:
+        html_logos += f"<img src='data:image/png;base64,{b64_eu}' style='height: 25px; width: auto; object-fit: contain; opacity: 0.9;'>"
+    if b64_logos:
+        html_logos += f"<img src='data:image/png;base64,{b64_logos}' style='height: 50px; width: auto; object-fit: contain; opacity: 0.9;'>"
+    
+    html_logos += "</div>"
+
+    st.markdown(html_logos, unsafe_allow_html=True)
+
+# PÁGINA APÓS A PÁGINA INICIAL
 else:
     # --- BARRA LATERAL ---
     st.sidebar.markdown("### Contexto Temporal")
@@ -668,11 +698,18 @@ else:
                     mask_acoes = (df['Tipo'] == 'ação') | df['Speaker_Filtro'].astype(str).str.startswith("Ação")
                     if col_ato: mask_acoes = mask_acoes | df[col_ato].astype(str).str.startswith("Ação")
                     
-                    if "Todos" in oradores_tab1 or not oradores_tab1: mask_oradores = pd.Series(True, index=df.index)
-                    else: mask_oradores = df['Speaker_Filtro'].isin(oradores_tab1)
-                    
-                    if mostrar_acoes_tab1: df_filtrado_tab1 = df[mask_oradores | mask_acoes]
-                    else: df_filtrado_tab1 = df[mask_oradores & ~mask_acoes]
+                    if "Todos" in oradores_tab1 or not oradores_tab1: 
+                        mask_oradores = pd.Series(True, index=df.index)
+                    else: 
+                        # 1. Usar a coluna original para não perder quem fez a ação
+                        mask_oradores = df['Speaker'].isin(oradores_tab1)
+
+                    if mostrar_acoes_tab1: 
+                        # 2. Filtrar falas e ações, mas apenas do orador
+                        df_filtrado_tab1 = df[mask_oradores]
+                    else: 
+                        # 3. Filtrar apenas falas do orador
+                        df_filtrado_tab1 = df[mask_oradores & ~mask_acoes]
                 else:
                     df_filtrado_tab1 = df
 
@@ -963,9 +1000,7 @@ else:
                     with open(caminho_html_encontrado, 'r', encoding='utf-8') as f: 
                         html_source = f.read()
                     
-                    # ==========================================
-                    # TRUQUE: CORRIGIR TEXTOS E ERROS DO CÓDIGO NATIVO
-                    # ==========================================
+                    # CORRIGIR TEXTOS E ERROS DO CÓDIGO NATIVO
                     html_source = html_source.replace("Cooperao", "Cooperação")
                     html_source = html_source.replace("Aco: Aplausos", "Ação: Aplausos")
                     html_source = html_source.replace("Aco: Protestos", "Ação: Protestos")
@@ -973,15 +1008,20 @@ else:
                     html_source = html_source.replace("Acoes", "Ações")
                     html_source = re.sub(r'\s*\(\d+\)', '', html_source)
                     
-                    # 🚀 A BALA DE PRATA: Corrige o bug do ".toFixed" do código original!
-                    # (Procura a função quebrada e acrescenta-lhe os parênteses que faltavam)
+                    
                     html_source = re.sub(r'\.toFixed(?!\()', '.toFixed(2)', html_source)
-                                   
+                                    
                     script_e_css = """
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
                     <style>
+                        #graph-wrapper { overflow: hidden !important; height: 100vh !important; width: 100vw !important; position: relative !important; }
+                        #graph-container { overflow: visible !important; transform-origin: 0 0 !important; width: 100% !important; height: 100% !important; }
+                        svg { overflow: visible !important; width: 100% !important; height: 100% !important; }
+                        
                         #grafico { margin: 0 !important; width: 100% !important; height: 100vh !important; padding: 0 !important; }
                         #sidebar, #openSidebar, .closebtn, #main-title, #file-subtitle { display: none !important; }
+                        
+                        /* ESTILOS DA BARRA DE FILTROS E LEGENDA */
                         #nova-barra-limpa { position: absolute; bottom: 20px; left: 20px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 12px; z-index: 9999; background: rgba(255, 255, 255, 0.95); padding: 15px 25px; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 8px 30px rgba(0,0,0,0.08); pointer-events: auto; max-width: calc(100vw - 260px); width: auto; white-space: normal !important; }
                         .linha-um, .linha-dois { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; width: 100% !important; flex-wrap: wrap !important; }
                         .linha-um { gap: 15px 30px !important; }
@@ -1001,7 +1041,6 @@ else:
                         .legenda-aberta h1, .legenda-aberta h2, .legenda-aberta h3, .legenda-aberta b, .legenda-aberta strong { text-transform: uppercase !important; margin-bottom: 6px !important; font-size: 11px !important; opacity: 0.8 !important; }
                         .titulo-caption-injetado { font-size: 14px !important; font-weight: 800 !important; text-transform: uppercase !important; border-bottom: 2px solid #e2e8f0 !important; padding-bottom: 6px !important; margin-bottom: 10px !important; opacity: 1 !important; }
                         [title*="Matrix heatmap"], [title*="Matrix Heatmap"] { display: none !important; }
-                        /* AJUSTES PARA TELEMÓVEIS E ECRÃS PEQUENOS */
                         @media screen and (max-width: 768px) {
                             .legenda-aberta { top: 5px !important; right: 5px !important; padding: 8px !important; min-width: 120px !important; transform: scale(0.75); transform-origin: top right; max-height: 35vh !important; }
                             #nova-barra-limpa { bottom: 5px !important; left: 5px !important; right: 5px !important; padding: 10px !important; max-width: calc(100vw - 10px) !important; transform: scale(0.8); transform-origin: bottom left; }
@@ -1010,7 +1049,157 @@ else:
                         }
                     </style>
                     <script>
-                        // Apenas mantemos o JS que embeleza as caixas (recolocação e cor)
+                        setTimeout(function() {
+                            let container = document.getElementById("graph-container");
+                            let wrapper = document.getElementById("graph-wrapper");
+                            
+                            if (container && wrapper) {
+                                // 1. Matar os eventos defeituosos clonando os botões
+                                ['btn-reset', 'btn-zoom-in', 'btn-zoom-out', 'btn-pan', 'btn-zoom-box'].forEach(id => {
+                                    let btn = document.getElementById(id);
+                                    if(btn) {
+                                        let newBtn = btn.cloneNode(true);
+                                        btn.parentNode.replaceChild(newBtn, btn);
+                                    }
+                                });
+                                
+                                let btnReset = document.getElementById("btn-reset");
+                                let btnZoomIn = document.getElementById("btn-zoom-in");
+                                let btnZoomOut = document.getElementById("btn-zoom-out");
+                                let btnPan = document.getElementById("btn-pan");
+                                let btnZoomBox = document.getElementById("btn-zoom-box");
+                                
+                                // Variáveis de estado imaculadas
+                                let zl = 1, tx = 0, ty = 0;
+                                let isPan = false, isDrag = false, isBox = false;
+                                let sx = 0, sy = 0;
+                                let selRect = document.getElementById("selection-rectangle");
+                                
+                                // Limpar lixo CSS nativo
+                                wrapper.style.transform = "";
+                                wrapper.style.transformOrigin = "";
+                                container.style.transform = `translate(0px, 0px) scale(1)`;
+                                container.style.transformOrigin = "0 0";
+                                
+                                function applyT() {
+                                    container.style.transform = `translate(${tx}px, ${ty}px) scale(${zl})`;
+                                }
+                                
+                                function off() {
+                                    isPan = false; isBox = false; isDrag = false;
+                                    if(btnPan) { btnPan.classList.remove("active"); btnPan.style.backgroundColor = ""; }
+                                    if(btnZoomBox) { btnZoomBox.classList.remove("active"); btnZoomBox.style.backgroundColor = ""; }
+                                    wrapper.style.cursor = "default";
+                                    if(selRect) selRect.style.display = "none";
+                                }
+                                
+                                // Eventos dos botões
+                                if(btnReset) btnReset.addEventListener("click", () => { off(); zl=1; tx=0; ty=0; applyT(); });
+                                if(btnZoomIn) btnZoomIn.addEventListener("click", () => { zl = Math.min(zl+0.2, 5); applyT(); });
+                                if(btnZoomOut) btnZoomOut.addEventListener("click", () => { zl = Math.max(zl-0.2, 0.1); applyT(); });
+                                
+                                if(btnPan) btnPan.addEventListener("click", () => {
+                                    if(isPan) off(); else { off(); isPan = true; btnPan.classList.add("active"); btnPan.style.backgroundColor = "#0055aa"; wrapper.style.cursor = "grab"; }
+                                });
+                                
+                                if(btnZoomBox) btnZoomBox.addEventListener("click", () => {
+                                    if(isBox) off();
+                                    else { 
+                                        off(); isBox = true; btnZoomBox.classList.add("active"); btnZoomBox.style.backgroundColor = "#0055aa"; wrapper.style.cursor = "crosshair"; 
+                                        if (!selRect) {
+                                            selRect = document.createElement("div");
+                                            selRect.id = "selection-rectangle";
+                                            selRect.style.position = "absolute";
+                                            selRect.style.border = "2px dashed #0055aa";
+                                            selRect.style.backgroundColor = "rgba(0, 85, 170, 0.2)";
+                                            selRect.style.pointerEvents = "none";
+                                            selRect.style.zIndex = "9999";
+                                            wrapper.appendChild(selRect);
+                                        }
+                                    }
+                                });
+                                
+                                // Intercetar e bloquear os eventos defeituosos do ecrã!
+                                wrapper.addEventListener("wheel", (e) => {
+                                    e.stopPropagation(); e.preventDefault();
+                                    let zoomSpeed = 0.1;
+                                    if(e.deltaY < 0) zl = Math.min(zl + zoomSpeed, 5);
+                                    else zl = Math.max(zl - zoomSpeed, 0.1);
+                                    applyT();
+                                }, {capture: true, passive: false});
+                                
+                                wrapper.addEventListener("mousedown", (e) => {
+                                    if(isBox || isPan) e.stopPropagation();
+                                    if(isBox) {
+                                        const r = wrapper.getBoundingClientRect();
+                                        sx = (e.clientX - r.left - tx) / zl;
+                                        sy = (e.clientY - r.top - ty) / zl;
+                                        selRect.style.left = `${sx * zl + tx}px`;
+                                        selRect.style.top = `${sy * zl + ty}px`;
+                                        selRect.style.width = "0px";
+                                        selRect.style.height = "0px";
+                                        selRect.style.display = "block";
+                                    } else if (isPan) {
+                                        isDrag = true;
+                                        sx = e.clientX - tx;
+                                        sy = e.clientY - ty;
+                                        wrapper.style.cursor = "grabbing";
+                                    }
+                                }, {capture: true});
+                                
+                                window.addEventListener("mousemove", (e) => {
+                                    if(isBox && selRect && selRect.style.display !== "none") {
+                                        e.stopPropagation();
+                                        const r = wrapper.getBoundingClientRect();
+                                        const mx = (e.clientX - r.left - tx) / zl;
+                                        const my = (e.clientY - r.top - ty) / zl;
+                                        const rx = Math.min(mx, sx);
+                                        const ry = Math.min(my, sy);
+                                        const rw = Math.abs(mx - sx);
+                                        const rh = Math.abs(my - sy);
+                                        selRect.style.left = `${rx * zl + tx}px`;
+                                        selRect.style.top = `${ry * zl + ty}px`;
+                                        selRect.style.width = `${rw * zl}px`;
+                                        selRect.style.height = `${rh * zl}px`;
+                                    } else if (isPan && isDrag) {
+                                        e.stopPropagation();
+                                        tx = e.clientX - sx;
+                                        ty = e.clientY - sy;
+                                        applyT();
+                                    }
+                                }, {capture: true});
+                                
+                                window.addEventListener("mouseup", (e) => {
+                                    if(isBox && selRect && selRect.style.display !== "none") {
+                                        e.stopPropagation();
+                                        selRect.style.display = "none";
+                                        const r = wrapper.getBoundingClientRect();
+                                        const mx = (e.clientX - r.left - tx) / zl;
+                                        const my = (e.clientY - r.top - ty) / zl;
+                                        const x1 = Math.min(sx, mx);
+                                        const y1 = Math.min(sy, my);
+                                        const x2 = Math.max(sx, mx);
+                                        const y2 = Math.max(sy, my);
+                                        const sw = x2 - x1;
+                                        const sh = y2 - y1;
+                                        if(sw >= 10 && sh >= 10) {
+                                            const scX = r.width / sw;
+                                            const scY = r.height / sh;
+                                            zl = Math.min(scX, scY);
+                                            tx = -x1 * zl;
+                                            ty = -y1 * zl;
+                                            applyT();
+                                        }
+                                        off();
+                                    } else if (isPan) {
+                                        isDrag = false;
+                                        wrapper.style.cursor = "grab";
+                                    }
+                                }, {capture: true});
+                            }
+                        }, 1000);
+
+                        // JS QUE EMBELEZA AS CAIXAS (recolocação e cor)
                         setTimeout(function() {
                             try {
                                 let todosElementos = document.querySelectorAll('*');
@@ -1071,7 +1260,6 @@ else:
                                     botao.style.setProperty('display', 'none', 'important');
                                 });
                             } catch (err) {}
-                            
                         }, 200); 
                     </script>
                     """
